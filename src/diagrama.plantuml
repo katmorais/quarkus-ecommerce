@@ -1,0 +1,177 @@
+# PlantUML Editor
+
+1. select template
+2. write uml diagram
+
+@startuml
+
+class Compra {
+    - id: int
+    - data: Date
+    - totalCompra: Float
+}
+
+class Pagamento {
+    - id: int
+    - valorTotal: Double
+    - quantParcela: int
+    - valorParcela: int
+    - descricao: String
+}
+
+class Endereco {
+    - id: int
+    - principal: String
+    - logradouro: String
+    - bairro: String
+    - numero: String
+    - complemento: String
+    - cep: String
+}
+
+class Usuario {
+    - id: int
+    - nome: String
+    - cpf: String
+    - senha: String
+    - email: String
+    - dataNascimento: Date
+}
+
+enum Sexo {
+    - MASCULINO
+    - FEMININO
+}
+
+enum TipoPagamento {
+    - BOLETO
+    - PIX
+    - CREDITO
+    - DEBITO
+}
+
+class Camiseta {
+    - id: int
+    - nome: String
+    - descricao: String
+    - preco: Float
+    - estampa: String
+    - tecido: String
+}
+
+class Marca {
+    - id: int
+    - nome: String
+    - descricao: String
+}
+
+class Fornecedor {
+    - id: int
+    - nome: String
+    - endereco: Endereco
+    - dataContrato: Date
+    - telefone: Telefone
+    - endereco: Endereco
+}
+
+class ItemCompra {
+    - id: int
+    - quantidade: int
+    - precoUnitario: Double
+}
+
+class Telefone {
+    - id: int
+    - codigoArea: String
+    - numero: String
+}
+
+class Estado {
+    - id: int
+    - nome: String
+    - sigla: String
+}
+
+class Municipio {
+    - id: int
+    - nome: String
+}
+class Cupom{
+   - id: int
+   - codigo: String
+   - valorDesconto: Float
+   - validade: Date
+   - statusCupom: Boolean
+}
+
+enum Cargo{
+  - ADMINISTRADOR
+  - FUNCIONARIO
+  - CLIENTE
+  
+}
+
+enum StatusPedido {
+  - PENDENTE
+  - PROCESSAMENTO
+  - ENVIADO
+  - ENTREGUE
+}
+
+enum Tamanho{
+  - P
+  - M
+  - G
+  - GG
+}
+
+class Cor {
+  - id: int
+  - nome: string
+}
+
+class TipoCamiseta{
+  - id: int
+  - nome: String
+}
+
+class Cartao {
+  - id: int
+  - numeroCartao: String
+  - nome: String
+  - dataVencimento: Date
+}
+
+class Transportadora {
+  - id: int 
+  - nome: String
+  - capacidade: int
+  - estadosServiço: String
+  - Tarifa: Double
+  - telefone: Telefone
+}
+
+Transportadora "*" ---> "*" Compra
+Usuario "1" ---> "*" Cartao 
+Usuario "1" *--> "*" Telefone
+Usuario "*" --> "*" Camiseta: listaDesejos
+Usuario "*" *--> "*" Endereco
+Usuario "*" --> "1" Sexo
+Compra "1" *--> "*" ItemCompra
+Compra "1" --> "*" Pagamento
+Compra "*" --> "1" Usuario
+Compra "1" --> "1" Cupom
+ItemCompra "*" --> "1" Camiseta
+Camiseta "*" --> "1" Fornecedor
+Camiseta "*" --> "1" Marca
+Camiseta "*" ---> "*" Cor
+Camiseta "*" ---> "1" TipoCamiseta
+Pagamento "*" --> "1" TipoPagamento
+Endereco "*" *--> "1" Municipio
+Municipio "*" --> "1" Estado
+Usuario "1" --> "1" Cargo
+Camiseta "*"--> "1" Tamanho
+Compra "*" --> "1" StatusPedido
+
+
+@enduml
