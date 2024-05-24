@@ -9,30 +9,27 @@ public enum Sexo {
     FEMININO(2, "Feminino");
    
     private final int id;
-    private final String label;
+    private final String sexo;
 
-    Sexo(int id, String label) {
+    Sexo(int id, String sexo) {
         this.id = id;
-        this.label = label;
+        this.sexo = sexo;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getLabel() {
-        return label;
+    public String getSexo() {
+        return sexo;
     }
 
     public static Sexo valueOf(Integer id) throws IllegalArgumentException {
-        if (id == null)
-            return null;
-
-        for(Sexo perfil : Sexo.values()) {
-            if (id.equals(perfil.getId()))
-                return perfil;
-        } 
-        throw new IllegalArgumentException("Id inválido:" + id);
+        for (Sexo sexo : Sexo.values()) {
+            if (sexo.id == id)
+                return sexo;
+        }
+        throw new IllegalArgumentException("id sexo inválido.");
     }
 
 }

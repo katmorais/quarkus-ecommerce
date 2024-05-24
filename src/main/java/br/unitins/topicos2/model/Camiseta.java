@@ -13,6 +13,7 @@ public class Camiseta extends DefaultEntity{
     private String estampa;
     private String tecido;
     private Tamanho tamanho;
+    private String nomeImagem;
 
     @JoinColumn(name = "id_fornecedor")
     @ManyToOne
@@ -96,6 +97,12 @@ public class Camiseta extends DefaultEntity{
     }
     public void setTipoCamiseta(TipoCamiseta tipoCamiseta) {
         this.tipoCamiseta = tipoCamiseta;
+    }
+    public String getNomeImagem() {
+        return nomeImagem;
+    }
+    public void setNomeImagem(String nomeImagem) {
+        this.nomeImagem = nomeImagem;
     }
 
     

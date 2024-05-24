@@ -4,21 +4,18 @@ import br.unitins.topicos2.model.Marca;
 
 public record MarcaResponseDTO(
 
-Long id,
-String nome,
-String descricao
-
+        Long id,
+        String nome,
+        String descricao
 
 ) {
 
-
-
-     public static MarcaResponseDTO valueOf(Marca marca) {
+    public static MarcaResponseDTO valueOf(Marca marca) {
         return new MarcaResponseDTO(
                 marca.getId(),
                 marca.getNome(),
-                marca.getDescricao()); 
-                
+                marca.getDescricao());
+
     }
 
 }

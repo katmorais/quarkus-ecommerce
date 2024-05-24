@@ -8,8 +8,8 @@ import jakarta.persistence.Converter;
 public class SexoConverter implements AttributeConverter<Sexo, Integer> {
 
     @Override
-    public Integer convertToDatabaseColumn(Sexo prioridade) {
-        return prioridade == null ? null : prioridade.getId();
+    public Integer convertToDatabaseColumn(Sexo sexo) {
+        return sexo.getId();
     }
 
     @Override

@@ -43,3 +43,5 @@ insert into cliente (id_pessoa, id_cidade) values (2, 1);
 insert into cliente (id_pessoa, id_cidade) values (4, 2);
 
 insert into funcionario(id_pessoa) values (3);
+
+  

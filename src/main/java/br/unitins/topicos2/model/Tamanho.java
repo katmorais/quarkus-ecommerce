@@ -4,25 +4,33 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Tamanho {
-    P(1, "P"), 
+    P(1, "P"),
     M(2, "M"),
-    G(3, "G"), 
+    G(3, "G"),
     GG(4, "GG");
-   
-    private int id;
-    private String label;
 
-    Tamanho(int id, String label) {
+    private int id;
+    private String tamanho;
+
+    Tamanho(int id, String tamanho) {
         this.id = id;
-        this.label = label;
+        this.tamanho = tamanho;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getLabel() {
-        return label;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTamanho() {
+        return tamanho;
+    }
+
+    public void setTamanho(String tamanho) {
+        this.tamanho = tamanho;
     }
 
     public static Tamanho valueOf(Integer id) throws IllegalArgumentException {
@@ -35,8 +43,4 @@ public enum Tamanho {
         } 
         throw new IllegalArgumentException("Id inválido:" + id);
     }
-
 }
-
-
-

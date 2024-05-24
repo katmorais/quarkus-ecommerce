@@ -6,7 +6,6 @@ public record PessoaDTO(
         Long id,
         String nome,
         String login,
-        String senha,
         List<TelefoneDTO> listaTelefone,
         List<EnderecoDTO> listaEndereco,
         List<CartaoDTO> cartoes

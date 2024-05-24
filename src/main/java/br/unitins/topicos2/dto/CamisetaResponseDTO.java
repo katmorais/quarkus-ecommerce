@@ -3,6 +3,7 @@ package br.unitins.topicos2.dto;
 import java.util.List;
 
 import br.unitins.topicos2.model.Camiseta;
+import br.unitins.topicos2.model.Tamanho;
 
 public record CamisetaResponseDTO(
         Long id,
@@ -12,10 +13,13 @@ public record CamisetaResponseDTO(
         Double preco,
         String estampa,
         String tecido,
+        String nomeImagem,
+        Tamanho tamanho,
         FornecedorResponseDTO fornecedor,
         TipoCamisetaResponseDTO tipoCamiseta,
         MarcaResponseDTO marca,
         List<CorResponseDTO> cores
+        
 
 ) {
 
@@ -32,6 +36,8 @@ public record CamisetaResponseDTO(
                 camiseta.getPreco(),
                 camiseta.getEstampa(),
                 camiseta.getTecido(),
+                camiseta.getNomeImagem(),
+                camiseta.getTamanho(),
                 FornecedorResponseDTO.valueOf(camiseta.getFornecedor()),
                 TipoCamisetaResponseDTO.valueOf(camiseta.getTipoCamiseta()),
                 MarcaResponseDTO.valueOf(camiseta.getMarca()),

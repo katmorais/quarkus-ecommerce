@@ -7,8 +7,8 @@ import jakarta.persistence.Converter;
 @Converter(autoApply = true)
 public class CargoConveter implements AttributeConverter<Cargo, Integer> {
     @Override
-    public Integer convertToDatabaseColumn(Cargo prioridade) {
-        return prioridade == null ? null : prioridade.getId();
+    public Integer convertToDatabaseColumn(Cargo cargo) {
+        return cargo.getId();
     }
 
     @Override
