@@ -9,8 +9,8 @@ import jakarta.persistence.Converter;
 public class StatusPedidoConverter implements AttributeConverter<StatusPedido, Integer>{
  
     @Override
-    public Integer convertToDatabaseColumn(StatusPedido prioridade) {
-        return prioridade == null ? null : prioridade.getId();
+    public Integer convertToDatabaseColumn(StatusPedido statusPedido) {
+        return statusPedido.getId();
     }
 
     @Override

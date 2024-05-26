@@ -71,6 +71,7 @@ public class CamisetaServiceImpl implements CamisetaService {
         entity.setPreco(camisetaDTO.preco());
         entity.setEstampa(camisetaDTO.estampa());
         entity.setTecido(camisetaDTO.tecido());
+        entity.setTamanho(Tamanho.valueOf(camisetaDTO.idTamanho()));
         entity.setFornecedor(fornecedorRepository.findById(camisetaDTO.idFornecedor()));
         entity.setTipoCamiseta(tipoCamisetaRepository.findById(camisetaDTO.idTipoCamiseta()));
         entity.setMarca(marcaRepository.findById(camisetaDTO.idMarca()));
@@ -102,6 +103,7 @@ public class CamisetaServiceImpl implements CamisetaService {
         entity.setPreco(camisetaDTO.preco());
         entity.setEstampa(camisetaDTO.estampa());
         entity.setTecido(camisetaDTO.tecido());
+        entity.setTamanho(Tamanho.valueOf(camisetaDTO.idTamanho()));
         entity.setTipoCamiseta(tipoCamisetaRepository.findById(camisetaDTO.idTipoCamiseta()));
         entity.setFornecedor(fornecedorRepository.findById(camisetaDTO.idFornecedor()));
         entity.setMarca(marcaRepository.findById(camisetaDTO.idMarca()));

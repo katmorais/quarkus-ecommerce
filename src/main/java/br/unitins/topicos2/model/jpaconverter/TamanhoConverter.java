@@ -8,14 +8,13 @@ import jakarta.persistence.Converter;
 public class TamanhoConverter implements AttributeConverter<Tamanho, Integer>{
 
     @Override
-    public Integer convertToDatabaseColumn(Tamanho prioridade) {
-        return prioridade == null ? null : prioridade.getId();
+    public Integer convertToDatabaseColumn(Tamanho tamanho) {
+        return tamanho.getId();
     }
 
     @Override
     public Tamanho convertToEntityAttribute(Integer id) {
         return Tamanho.valueOf(id);
     }
-
    
 }

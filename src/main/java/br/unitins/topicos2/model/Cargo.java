@@ -9,30 +9,27 @@ public enum Cargo {
     CLIENTE(3, "Cliente");
 
     private int id;
-    private String label;
+    private String cargo;
 
-    Cargo(int id, String label) {
+    Cargo(int id, String cargo) {
         this.id = id;
-        this.label = label;
+        this.cargo = cargo;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getLabel() {
-        return label;
+    public String getCargo() {
+        return cargo;
     }
 
     public static Cargo valueOf(Integer id) throws IllegalArgumentException {
-        if (id == null)
-            return null;
-
-        for (Cargo perfil : Cargo.values()) {
-            if (id.equals(perfil.getId()))
-                return perfil;
+        for (Cargo cargo : Cargo.values()) {
+            if (cargo.id == id)
+                return cargo;
         }
-        throw new IllegalArgumentException("Id inválido:" + id);
+        throw new IllegalArgumentException("id cargo inválido.");
     }
 
 }
