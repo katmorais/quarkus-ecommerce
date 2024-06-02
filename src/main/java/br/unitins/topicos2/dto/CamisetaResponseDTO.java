@@ -14,6 +14,7 @@ public record CamisetaResponseDTO(
         String estampa,
         String tecido,
         Tamanho tamanho,
+        String nomeImagem,
         FornecedorResponseDTO fornecedor,
         TipoCamisetaResponseDTO tipoCamiseta,
         MarcaResponseDTO marca,
@@ -23,9 +24,9 @@ public record CamisetaResponseDTO(
 
     public static CamisetaResponseDTO valueOf(Camiseta camiseta) {
         List<CorResponseDTO> cor = camiseta.getCor()
-        .stream()
-        .map(CorResponseDTO::valueOf)
-        .toList();
+                .stream()
+                .map(CorResponseDTO::valueOf)
+                .toList();
         return new CamisetaResponseDTO(
                 camiseta.getId(),
                 camiseta.getNome(),
@@ -35,12 +36,11 @@ public record CamisetaResponseDTO(
                 camiseta.getEstampa(),
                 camiseta.getTecido(),
                 camiseta.getTamanho(),
+                camiseta.getNomeImagem(),
                 FornecedorResponseDTO.valueOf(camiseta.getFornecedor()),
                 TipoCamisetaResponseDTO.valueOf(camiseta.getTipoCamiseta()),
                 MarcaResponseDTO.valueOf(camiseta.getMarca()),
                 cor);
-                
-               
 
     }
 }

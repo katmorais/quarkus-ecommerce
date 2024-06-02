@@ -61,7 +61,7 @@ public class CamisetaServiceImpl implements CamisetaService {
     @Override
     @Transactional
     public CamisetaResponseDTO create(@Valid CamisetaDTO camisetaDTO) throws ConstraintViolationException {
-        // validar(camisetaDTO);
+        validar(camisetaDTO);
 
         Camiseta entity = new Camiseta();
 

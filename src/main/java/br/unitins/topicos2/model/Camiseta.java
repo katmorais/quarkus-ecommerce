@@ -11,8 +11,15 @@ public class Camiseta extends DefaultEntity{
     private Integer estoque;
     private Double preco;
     private String estampa;
+    public String getNomeImagem() {
+        return nomeImagem;
+    }
+    public void setNomeImagem(String nomeImagem) {
+        this.nomeImagem = nomeImagem;
+    }
     private String tecido;
     private Tamanho tamanho;
+    private String nomeImagem;
 
     @JoinColumn(name = "id_fornecedor")
     @ManyToOne
@@ -29,7 +36,6 @@ public class Camiseta extends DefaultEntity{
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_cor")
     private List<Cor> cor;
-
 
     public String getNome() {
         return nome;
