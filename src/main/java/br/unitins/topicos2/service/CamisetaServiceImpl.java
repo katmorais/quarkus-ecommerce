@@ -1,11 +1,11 @@
 package br.unitins.topicos2.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import br.unitins.topicos2.dto.CamisetaDTO;
 import br.unitins.topicos2.dto.CamisetaResponseDTO;
+
 import br.unitins.topicos2.dto.CorDTO;
 import br.unitins.topicos2.model.*;
 import br.unitins.topicos2.repository.CamisetaRepository;
@@ -44,9 +44,8 @@ public class CamisetaServiceImpl implements CamisetaService {
     Validator validator;
 
     @Override
-    public List<CamisetaResponseDTO> getAll(int page, int pageSize) {
-
-        List<Camiseta> list = camisetaRepository.findAll().page(page, pageSize).list();
+    public List<CamisetaResponseDTO> getAll() {
+        List<Camiseta> list = camisetaRepository.findAll2();
         return list.stream().map(e -> CamisetaResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
 
@@ -62,9 +61,29 @@ public class CamisetaServiceImpl implements CamisetaService {
     @Transactional
     public CamisetaResponseDTO create(@Valid CamisetaDTO camisetaDTO) throws ConstraintViolationException {
         validar(camisetaDTO);
-
+    
+        // Obtendo os identificadores das entidades relacionadas
+        Long idFornecedor = camisetaDTO.idFornecedor();
+        Long idTipoCamiseta = camisetaDTO.idTipoCamiseta();
+        Long idMarca = camisetaDTO.idMarca();
+    
+        // Verificando se os identificadores não são nulos
+        if (idFornecedor == null || idTipoCamiseta == null || idMarca == null) {
+            throw new IllegalArgumentException("Identificadores de fornecedor, tipo de camiseta ou marca não podem ser nulos.");
+        }
+    
+        // Carregando as entidades relacionadas pelos seus identificadores
+        Fornecedor fornecedor = fornecedorRepository.findById(idFornecedor);
+        TipoCamiseta tipoCamiseta = tipoCamisetaRepository.findById(idTipoCamiseta);
+        Marca marca = marcaRepository.findById(idMarca);
+    
+        // Verificando se as entidades relacionadas foram encontradas
+        if (fornecedor == null || tipoCamiseta == null || marca == null) {
+            throw new NotFoundException("Fornecedor, tipo de camiseta ou marca não encontrados.");
+        }
+    
+        // Criando a entidade Camiseta e definindo suas propriedades
         Camiseta entity = new Camiseta();
-
         entity.setNome(camisetaDTO.nome());
         entity.setDescricao(camisetaDTO.descricao());
         entity.setEstoque(camisetaDTO.estoque());
@@ -72,24 +91,28 @@ public class CamisetaServiceImpl implements CamisetaService {
         entity.setEstampa(camisetaDTO.estampa());
         entity.setTecido(camisetaDTO.tecido());
         entity.setTamanho(Tamanho.valueOf(camisetaDTO.tamanho()));
-        entity.setFornecedor(fornecedorRepository.findById(camisetaDTO.idFornecedor()));
-        entity.setTipoCamiseta(tipoCamisetaRepository.findById(camisetaDTO.idTipoCamiseta()));
-        entity.setMarca(marcaRepository.findById(camisetaDTO.idMarca()));
-
-        entity.setCor(new ArrayList<Cor>());
-
+        entity.setFornecedor(fornecedor);
+        entity.setTipoCamiseta(tipoCamiseta);
+        entity.setMarca(marca);
+    
+        // Adicionando as cores à camiseta, se fornecidas
         if (camisetaDTO.cores() != null) {
-            for (CorDTO cor : camisetaDTO.cores()) {
-                Cor c = new Cor();
-                c.setNome(cor.nome());
-                entity.getCor().add(c);
-            }
+            List<Cor> cores = camisetaDTO.cores().stream()
+                    .map(corDTO -> {
+                        Cor cor = new Cor();
+                        cor.setNome(corDTO.nome());
+                        return cor;
+                    })
+                    .collect(Collectors.toList());
+            entity.setCor(cores);
         }
+    
+        // Persistindo a entidade Camiseta no banco de dados
         camisetaRepository.persist(entity);
-
+    
         return CamisetaResponseDTO.valueOf(entity);
     }
-
+    
     @Override
     @Transactional
     public CamisetaResponseDTO update(Long id, CamisetaDTO camisetaDTO) throws ConstraintViolationException {
@@ -130,20 +153,14 @@ public class CamisetaServiceImpl implements CamisetaService {
     public void delete(Long id) {
         camisetaRepository.deleteById(id);
     }
-
     @Override
-    public List<CamisetaResponseDTO> findByNome(String nome, int page, int pageSize) {
-        List<Camiseta> list = camisetaRepository.findByNome(nome).page(page, pageSize).list();
+    public List<CamisetaResponseDTO> findByNome(String nome) {
+        List<Camiseta> list = camisetaRepository.findByNome(nome).list();
         return list.stream().map(e -> CamisetaResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
 
     @Override
     public long count() {
         return camisetaRepository.count();
-    }
-
-    @Override
-    public long countByNome(String nome) {
-        return camisetaRepository.findByNome(nome).count();
     }
 }

@@ -22,7 +22,7 @@ public record CamisetaDTO (
     Long idFornecedor,
     @NotNull(message = "O campo idTipoCamiseta deve ser informado.")
     Long idTipoCamiseta,
-    @NotNull(message = "O campo idTipoCamiseta deve ser informado.")
+    @NotNull(message = "O campo idMarca deve ser informado.")
     Long idMarca,
 
     List<CorDTO> cores
