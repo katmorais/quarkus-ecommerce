@@ -1,6 +1,10 @@
 package br.unitins.topicos2.resource;
 
 import java.util.List;
+
+import br.unitins.topicos2.form.CamisetaImageForm;
+import br.unitins.topicos2.service.FileService;
+import jakarta.ws.rs.*;
 import org.jboss.logging.Logger;
 import br.unitins.topicos2.application.Result;
 import br.unitins.topicos2.dto.CamisetaDTO;
@@ -8,19 +12,11 @@ import br.unitins.topicos2.dto.CamisetaResponseDTO;
 import br.unitins.topicos2.service.CamisetaService;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.DefaultValue;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.Response.ResponseBuilder;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 @Path("/camisetas")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -29,6 +25,9 @@ public class CamisetaResource {
 
     @Inject
     CamisetaService camisetaService;
+
+    @Inject
+    FileService fileService;
 
     private static final Logger LOG = Logger.getLogger(CamisetaResource.class);
 
@@ -98,4 +97,26 @@ public class CamisetaResource {
         return camisetaService.findByNome(nome, page, pageSize);
 
     }
+
+    @PATCH
+    @Path("/image/upload")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response salvarImagem(@MultipartForm CamisetaImageForm form) {
+        try {
+            fileService.salvar(form.getId(), form.getNomeImagem(), form.getImagem());
+            return Response.noContent().build();
+        } catch (Exception e) {
+            return Response.serverError().entity("Erro ao salvar imagem").build();
+        }
+    }
+
+    @GET
+    @Path("/image/download/{nomeImagem}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response download(@PathParam("nomeImagem") String nomeImagem) {
+        ResponseBuilder response = Response.ok(fileService.download(nomeImagem));
+        response.header("Content-Disposition", "attachment;filename=" + nomeImagem);
+        return response.build();
+    }
+
 }

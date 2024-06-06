@@ -1,18 +1,10 @@
 package br.unitins.topicos2.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import br.unitins.topicos2.dto.CamisetaDTO;
 import br.unitins.topicos2.dto.CamisetaResponseDTO;
-import br.unitins.topicos2.dto.CorDTO;
-import br.unitins.topicos2.model.*;
-import br.unitins.topicos2.repository.CamisetaRepository;
-import br.unitins.topicos2.repository.CorRepository;
-import br.unitins.topicos2.repository.FornecedorRepository;
-import br.unitins.topicos2.repository.MarcaRepository;
-import br.unitins.topicos2.repository.TipoCamisetaRepository;
+import br.unitins.topicos2.model.Camiseta;
+import br.unitins.topicos2.model.Tamanho;
+import br.unitins.topicos2.repository.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -21,6 +13,10 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class CamisetaServiceImpl implements CamisetaService {
@@ -47,7 +43,7 @@ public class CamisetaServiceImpl implements CamisetaService {
     public List<CamisetaResponseDTO> getAll(int page, int pageSize) {
 
         List<Camiseta> list = camisetaRepository.findAll().page(page, pageSize).list();
-        return list.stream().map(e -> CamisetaResponseDTO.valueOf(e)).collect(Collectors.toList());
+        return list.stream().map(CamisetaResponseDTO::valueOf).collect(Collectors.toList());
     }
 
     @Override
@@ -71,20 +67,20 @@ public class CamisetaServiceImpl implements CamisetaService {
         entity.setPreco(camisetaDTO.preco());
         entity.setEstampa(camisetaDTO.estampa());
         entity.setTecido(camisetaDTO.tecido());
-        entity.setTamanho(Tamanho.valueOf(camisetaDTO.idTamanho()));
-        entity.setFornecedor(fornecedorRepository.findById(camisetaDTO.idFornecedor()));
-        entity.setTipoCamiseta(tipoCamisetaRepository.findById(camisetaDTO.idTipoCamiseta()));
-        entity.setMarca(marcaRepository.findById(camisetaDTO.idMarca()));
+        entity.setTamanho(Tamanho.valueOf(camisetaDTO.tamanho()));
+        entity.setFornecedor(fornecedorRepository.findById(camisetaDTO.fornecedor()));
+        entity.setTipoCamiseta(tipoCamisetaRepository.findById(camisetaDTO.tipoCamiseta()));
+        entity.setMarca(marcaRepository.findById(camisetaDTO.marca()));
 
-        entity.setCor(new ArrayList<Cor>());
-
-        if (camisetaDTO.cores() != null) {
-            for (CorDTO cor : camisetaDTO.cores()) {
-                Cor c = new Cor();
-                c.setNome(cor.nome());
-                entity.getCor().add(c);
-            }
-        }
+//        entity.setCor(new ArrayList<Cor>());
+//
+//        if (camisetaDTO.cores() != null) {
+//            for (CorDTO cor : camisetaDTO.cores()) {
+//                Cor c = new Cor();
+//                c.setNome(cor.nome());
+//                entity.getCor().add(c);
+//            }
+//        }
         camisetaRepository.persist(entity);
 
         return CamisetaResponseDTO.valueOf(entity);
@@ -103,18 +99,18 @@ public class CamisetaServiceImpl implements CamisetaService {
         entity.setPreco(camisetaDTO.preco());
         entity.setEstampa(camisetaDTO.estampa());
         entity.setTecido(camisetaDTO.tecido());
-        entity.setTamanho(Tamanho.valueOf(camisetaDTO.idTamanho()));
-        entity.setTipoCamiseta(tipoCamisetaRepository.findById(camisetaDTO.idTipoCamiseta()));
-        entity.setFornecedor(fornecedorRepository.findById(camisetaDTO.idFornecedor()));
-        entity.setMarca(marcaRepository.findById(camisetaDTO.idMarca()));
+        entity.setTamanho(Tamanho.valueOf(camisetaDTO.tamanho()));
+        entity.setTipoCamiseta(tipoCamisetaRepository.findById(camisetaDTO.tipoCamiseta()));
+        entity.setFornecedor(fornecedorRepository.findById(camisetaDTO.fornecedor()));
+        entity.setMarca(marcaRepository.findById(camisetaDTO.marca()));
         // apagando os cores antigas
         entity.getCor().clear();
 
-        for (CorDTO cor : camisetaDTO.cores()) {
-            Cor c = new Cor();
-            c.setNome(cor.nome());
-            entity.getCor().add(c);
-        }
+//        for (CorDTO cor : camisetaDTO.cores()) {
+//            Cor c = new Cor();
+//            c.setNome(cor.nome());
+//            entity.getCor().add(c);
+//        }
         return CamisetaResponseDTO.valueOf(entity);
     }
 
@@ -134,7 +130,7 @@ public class CamisetaServiceImpl implements CamisetaService {
     @Override
     public List<CamisetaResponseDTO> findByNome(String nome, int page, int pageSize) {
         List<Camiseta> list = camisetaRepository.findByNome(nome).page(page, pageSize).list();
-        return list.stream().map(e -> CamisetaResponseDTO.valueOf(e)).collect(Collectors.toList());
+        return list.stream().map(CamisetaResponseDTO::valueOf).collect(Collectors.toList());
     }
 
     @Override
