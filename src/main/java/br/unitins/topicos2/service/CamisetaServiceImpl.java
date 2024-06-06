@@ -3,8 +3,12 @@ package br.unitins.topicos2.service;
 import br.unitins.topicos2.dto.CamisetaDTO;
 import br.unitins.topicos2.dto.CamisetaResponseDTO;
 import br.unitins.topicos2.model.Camiseta;
+import br.unitins.topicos2.model.Cor;
 import br.unitins.topicos2.model.Tamanho;
-import br.unitins.topicos2.repository.*;
+import br.unitins.topicos2.repository.CamisetaRepository;
+import br.unitins.topicos2.repository.FornecedorRepository;
+import br.unitins.topicos2.repository.MarcaRepository;
+import br.unitins.topicos2.repository.TipoCamisetaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -29,9 +33,6 @@ public class CamisetaServiceImpl implements CamisetaService {
 
     @Inject
     TipoCamisetaRepository tipoCamisetaRepository;
-
-    @Inject
-    CorRepository corRepository;
 
     @Inject
     MarcaRepository marcaRepository;
@@ -71,16 +72,8 @@ public class CamisetaServiceImpl implements CamisetaService {
         entity.setFornecedor(fornecedorRepository.findById(camisetaDTO.fornecedor()));
         entity.setTipoCamiseta(tipoCamisetaRepository.findById(camisetaDTO.tipoCamiseta()));
         entity.setMarca(marcaRepository.findById(camisetaDTO.marca()));
+        entity.setCor(camisetaDTO.cores().stream().map(Cor::new).collect(Collectors.toList()));
 
-//        entity.setCor(new ArrayList<Cor>());
-//
-//        if (camisetaDTO.cores() != null) {
-//            for (CorDTO cor : camisetaDTO.cores()) {
-//                Cor c = new Cor();
-//                c.setNome(cor.nome());
-//                entity.getCor().add(c);
-//            }
-//        }
         camisetaRepository.persist(entity);
 
         return CamisetaResponseDTO.valueOf(entity);
@@ -103,14 +96,8 @@ public class CamisetaServiceImpl implements CamisetaService {
         entity.setTipoCamiseta(tipoCamisetaRepository.findById(camisetaDTO.tipoCamiseta()));
         entity.setFornecedor(fornecedorRepository.findById(camisetaDTO.fornecedor()));
         entity.setMarca(marcaRepository.findById(camisetaDTO.marca()));
-        // apagando os cores antigas
-        entity.getCor().clear();
+        entity.setCor(camisetaDTO.cores().stream().map(Cor::new).collect(Collectors.toList()));
 
-//        for (CorDTO cor : camisetaDTO.cores()) {
-//            Cor c = new Cor();
-//            c.setNome(cor.nome());
-//            entity.getCor().add(c);
-//        }
         return CamisetaResponseDTO.valueOf(entity);
     }
 

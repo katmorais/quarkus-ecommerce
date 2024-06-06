@@ -1,9 +1,5 @@
 package br.unitins.topicos2.service;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import br.unitins.topicos2.dto.CorDTO;
 import br.unitins.topicos2.dto.CorResponseDTO;
 import br.unitins.topicos2.model.Cor;
@@ -16,6 +12,10 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class CorServiceImpl implements CorService {
@@ -30,7 +30,7 @@ public class CorServiceImpl implements CorService {
     public List<CorResponseDTO> getAll(int page, int pageSize) {
 
         List<Cor> list = corRepository.findAll().page(page, pageSize).list();
-        return list.stream().map(e -> CorResponseDTO.valueOf(e)).collect(Collectors.toList());
+        return list.stream().map(CorResponseDTO::valueOf).collect(Collectors.toList());
     }
 
     @Override
@@ -46,23 +46,20 @@ public class CorServiceImpl implements CorService {
     public CorResponseDTO create(@Valid CorDTO corDTO) throws ConstraintViolationException {
         //validar(corDTO);
 
-        Cor entity = new Cor();
-        entity.setNome(corDTO.nome());
+        Cor cor = new Cor(corDTO.nome());
+        corRepository.persist(cor);
 
-
-        corRepository.persist(entity);
-
-        return CorResponseDTO.valueOf(entity);
+        return CorResponseDTO.valueOf(cor);
     }
 
     @Override
     @Transactional
-    public CorResponseDTO update(Long id, CorDTO corDTO) throws ConstraintViolationException{
+    public CorResponseDTO update(Long id, CorDTO corDTO) throws ConstraintViolationException {
         validar(corDTO);
-   
+
         Cor entity = corRepository.findById(id);
 
-        entity.setNome(corDTO.nome());  
+        entity.setNome(corDTO.nome());
 
         return CorResponseDTO.valueOf(entity);
     }
@@ -83,7 +80,7 @@ public class CorServiceImpl implements CorService {
     @Override
     public List<CorResponseDTO> findByNome(String nome, int page, int pageSize) {
         List<Cor> list = corRepository.findByNome(nome).page(page, pageSize).list();
-        return list.stream().map(e -> CorResponseDTO.valueOf(e)).collect(Collectors.toList());
+        return list.stream().map(CorResponseDTO::valueOf).collect(Collectors.toList());
     }
 
     @Override
@@ -102,5 +99,5 @@ public class CorServiceImpl implements CorService {
         throw new UnsupportedOperationException("Unimplemented method 'getStatus'");
     }
 
- 
+
 }
