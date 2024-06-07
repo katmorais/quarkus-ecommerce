@@ -44,4 +44,11 @@ insert into cliente (id_pessoa, id_cidade) values (4, 2);
 
 insert into funcionario(id_pessoa) values (3);
 
-  
+INSERT INTO camiseta (nome, descricao, estoque, preco, estampa, tecido, id_fornecedor, id_tipoCamiseta, id_marca, nomeImagem) VALUES('Camiseta Azul', 'Camiseta básica azul', 50, 29.99, 'Estampa floral', 'Algodão', 1, 1, 1, 'azul_floral.jpg');
+INSERT INTO camiseta (nome, descricao, estoque, preco, estampa, tecido, id_fornecedor, id_tipoCamiseta, id_marca, nomeImagem) VALUES('Camiseta Preta', 'Camiseta casual preta', 20, 39.99, 'Estampa abstrata', 'Poliéster', 2, 2, 2, 'preta_abstrata.jpg');
+INSERT INTO camiseta (nome, descricao, estoque, preco, estampa, tecido, id_fornecedor, id_tipoCamiseta, id_marca, nomeImagem) VALUES('Camiseta Branca', 'Camiseta branca clássica', 100, 19.99, 'Sem estampa', 'Algodão', 1, 1, 3, 'branca_classica.jpg');
+INSERT INTO camiseta (nome, descricao, estoque, preco, estampa, tecido, id_fornecedor, id_tipoCamiseta, id_marca, nomeImagem) VALUES('Camiseta Vermelha', 'Camiseta vermelha vibrante', 15, 49.99, 'Estampa de logo', 'Algodão', 3, 3, 1, 'vermelha_logo.jpg');
+INSERT INTO camiseta (nome, descricao, estoque, preco, estampa, tecido, id_fornecedor, id_tipoCamiseta, id_marca, nomeImagem) VALUES ('Camiseta Amarela', 'Camiseta casual amarela', 35, 44.99, 'Estampa de listras', 'Algodão', 2, 2, 2, 'amarela_listras.jpg');
+INSERT INTO camiseta (nome, descricao, estoque, preco, estampa, tecido, id_fornecedor, id_tipoCamiseta, id_marca, nomeImagem) VALUES ('Camiseta Verde', 'Camiseta verde limão', 10, 29.99, 'Estampa de palmeiras', 'Algodão', 3, 1, 1, 'verde_palmeiras.jpg');
+INSERT INTO camiseta (nome, descricao, estoque, preco, estampa, tecido, id_fornecedor, id_tipoCamiseta, id_marca, nomeImagem) VALUES('Camiseta Cinza', 'Camiseta cinza mescla', 25, 34.99, 'Sem estampa', 'Poliéster', 1, 3, 3, 'cinza_mescla.jpg');
+INSERT INTO camiseta (nome, descricao, estoque, preco, estampa, tecido, id_fornecedor, id_tipoCamiseta, id_marca, nomeImagem) VALUES('Camiseta Laranja', 'Camiseta laranja vibrante', 20, 39.99, 'Estampa de abacaxi', 'Algodão', 2, 2, 1, 'laranja_abacaxi.jpg');

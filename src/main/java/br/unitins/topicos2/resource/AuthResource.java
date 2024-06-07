@@ -37,7 +37,7 @@ public class AuthResource {
         if (authDTO.perfil() == 1)
             usuario = clienteService.findByUsernameAndSenha(authDTO.login(), hash);
         else if (authDTO.perfil() == 2) {
-            // busca de usuario psicologo
+            // busca de usuario não ADM
         } else {
             return Response.status(Status.NOT_FOUND)
                     .entity("Username ou senha inválido").build();

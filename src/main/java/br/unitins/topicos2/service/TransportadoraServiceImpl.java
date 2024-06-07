@@ -1,9 +1,5 @@
 package br.unitins.topicos2.service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 import br.unitins.topicos2.dto.TransportadoraDTO;
 import br.unitins.topicos2.dto.TransportadoraResponseDTO;
 import br.unitins.topicos2.model.Telefone;
@@ -18,6 +14,11 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class TransportadoraServiceImpl implements TransportadoraService {
@@ -35,7 +36,7 @@ public class TransportadoraServiceImpl implements TransportadoraService {
     public List<TransportadoraResponseDTO> getAll(int page, int pageSize) {
 
         List<Transportadora> list = transportadoraRepository.findAll().page(page, pageSize).list();
-        return list.stream().map(e -> TransportadoraResponseDTO.valueOf(e)).collect(Collectors.toList());
+        return list.stream().map(TransportadoraResponseDTO::valueOf).toList();
     }
 
     @Override
