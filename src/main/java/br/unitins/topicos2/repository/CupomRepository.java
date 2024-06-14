@@ -11,6 +11,6 @@ public class CupomRepository implements PanacheRepository<Cupom>{
     public PanacheQuery<Cupom> findByNome(String nome){
         if(nome == null)
             return null;
-        return find("UPPER(nome) LIKE ?1 ", "%" + nome.toUpperCase() + "%");
+        return find("UPPER(codigo) LIKE ?1 ", "%" + nome.toUpperCase() + "%");
     }
 }
