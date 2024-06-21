@@ -5,12 +5,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import br.unitins.topicos2.dto.ClienteDTO;
 import br.unitins.topicos2.dto.ClienteResponseDTO;
+import br.unitins.topicos2.dto.ItemCompraResponseDTO;
 import br.unitins.topicos2.dto.UsuarioResponseDTO;
 import br.unitins.topicos2.model.*;
-import br.unitins.topicos2.repository.CidadeRepository;
-import br.unitins.topicos2.repository.ClienteRepository;
-import br.unitins.topicos2.repository.PessoaRepository;
-import br.unitins.topicos2.repository.UsuarioRepository;
+import br.unitins.topicos2.repository.*;
 import br.unitins.topicos2.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -28,6 +26,9 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Inject
     ClienteRepository clienteRepository;
+
+    @Inject
+    CheckoutRepository checkoutRepository;
 
     @Inject
     HashService hashService;
@@ -52,11 +53,11 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public ClienteResponseDTO findById(Long id) {
+    public Cliente findById(Long id) {
         Cliente cliente = clienteRepository.findById(id);
         if (cliente == null)
             throw new NotFoundException("Cliente não encontrado.");
-        return ClienteResponseDTO.valueOf(cliente);
+        return cliente;
     }
 
     @Override
@@ -80,6 +81,7 @@ public class ClienteServiceImpl implements ClienteService {
         Cliente cliente = new Cliente();
         cliente.setPessoa(pessoa);
         cliente.setNaturalidade(cidade);
+        cliente.setCargo(Cargo.CLIENTE);
         clienteRepository.persist(cliente);
 
         return ClienteResponseDTO.valueOf(cliente);
@@ -141,12 +143,17 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    public List<Checkout> getCompras(Long id) {
+        return checkoutRepository.findByClienteId(id);
+    }
+
+    @Override
     public UsuarioResponseDTO findByUsernameAndSenha(String username, String senha) {
         Cliente cliente = clienteRepository.findByUsernameAndSenha(username, senha).firstResult();
 
         if (cliente == null)
             throw new ValidationException(username, "Username ou senha inválido");
-        return UsuarioResponseDTO.valueOf(cliente.getPessoa());
+        return UsuarioResponseDTO.valueOf(cliente);
     }
 
 

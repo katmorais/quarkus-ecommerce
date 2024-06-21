@@ -1,7 +1,9 @@
 
 package br.unitins.topicos2.model;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Checkout extends DefaultEntity{
@@ -9,6 +11,14 @@ public class Checkout extends DefaultEntity{
     private String cardNumber;
     private String expiryDate;
     private String cvv;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_checkout")
+    private List<Camiseta> camisasIds;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
 
     public String getAddress() {
         return address;
@@ -40,5 +50,21 @@ public class Checkout extends DefaultEntity{
 
     public void setCvv(String cvv) {
         this.cvv = cvv;
+    }
+
+    public List<Camiseta> getCamisasIds() {
+        return camisasIds;
+    }
+
+    public void setCamisasIds(List<Camiseta> camisasIds) {
+        this.camisasIds = camisasIds;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 }

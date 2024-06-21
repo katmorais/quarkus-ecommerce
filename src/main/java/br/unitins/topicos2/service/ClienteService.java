@@ -5,6 +5,8 @@ import java.util.List;
 import br.unitins.topicos2.dto.ClienteDTO;
 import br.unitins.topicos2.dto.ClienteResponseDTO;
 import br.unitins.topicos2.dto.UsuarioResponseDTO;
+import br.unitins.topicos2.model.Checkout;
+import br.unitins.topicos2.model.Cliente;
 import jakarta.validation.Valid;
 
 public interface ClienteService {
@@ -12,7 +14,7 @@ public interface ClienteService {
     // recursos basicos
     List<ClienteResponseDTO> getAll(int page, int pageSize);
 
-    ClienteResponseDTO findById(Long id);
+    Cliente findById(Long id);
 
     ClienteResponseDTO create(@Valid ClienteDTO dto);
 
@@ -29,4 +31,6 @@ public interface ClienteService {
     long count();
 
     void alterarSenha(ClienteDTO dto);
+
+    List<Checkout> getCompras(Long id);
 }

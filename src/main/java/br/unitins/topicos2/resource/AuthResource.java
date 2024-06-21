@@ -31,21 +31,18 @@ public class AuthResource {
 
     @POST
     public Response login(AuthUsuarioDTO authDTO) {
-        String hash = hashService.getHashSenha(authDTO.senha());
+        try {
+            String hash = hashService.getHashSenha(authDTO.senha());
+            UsuarioResponseDTO usuario = clienteService.findByUsernameAndSenha(authDTO.login(), hash);
 
-        UsuarioResponseDTO usuario = null;
-        if (authDTO.perfil() == 1)
-            usuario = clienteService.findByUsernameAndSenha(authDTO.login(), hash);
-        else if (authDTO.perfil() == 2) {
-            // busca de usuario não ADM
-        } else {
+            return Response.ok(usuario)
+                    .header("Authorization", jwtService.generateJwt(usuario))
+                    .build();
+
+        } catch (Exception e) {
             return Response.status(Status.NOT_FOUND)
                     .entity("Username ou senha inválido").build();
         }
-        return Response.ok(usuario)
-                .header("Authorization", jwtService.generateJwt(usuario))
-                .build();
-
     }
 
     public static void main(String[] args) {

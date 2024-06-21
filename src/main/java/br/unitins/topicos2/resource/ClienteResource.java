@@ -27,6 +27,16 @@ public class ClienteResource {
         return Response.status(201).entity(retorno).build();
     }
 
+    @GET
+    @Path("/{id}")
+    public Response findById(@PathParam("id") Long id) {
+        try {
+            return Response.ok(service.findById(id)).build();
+        } catch (Exception e) {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar cliente.").build();
+        }
+    }
+
     @PUT
     @Transactional
     @Path("/{id}")
@@ -49,5 +59,12 @@ public class ClienteResource {
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.status(Status.NO_CONTENT).build();
+    }
+
+    @GET
+    @Transactional
+    @Path("/{id}/compras")
+    public Response getCompras(@PathParam("id") Long id) {
+        return Response.ok(service.getCompras(id)).build();
     }
 }

@@ -15,6 +15,9 @@ public class CheckoutServiceImpl implements CheckoutService {
     @Inject
     CheckoutRepository repository;
 
+    @Inject
+    ClienteService clienteService;
+
 //    @Inject
 //    Validator validator;
 
@@ -37,6 +40,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         entity.setCardNumber(dto.cardNumber());
         entity.setExpiryDate(dto.expiryDate());
         entity.setCvv(dto.cvv());
+        entity.setCliente(clienteService.findById(dto.idCliente()));
 
         repository.persist(entity);
     }

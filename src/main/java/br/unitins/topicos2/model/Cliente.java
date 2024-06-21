@@ -13,6 +13,8 @@ public class Cliente extends DefaultEntity {
     @JoinColumn(name = "id_cidade")
     private Cidade naturalidade;
 
+    private Cargo cargo;
+
     public Cidade getNaturalidade() {
         return naturalidade;
     }
@@ -29,4 +31,11 @@ public class Cliente extends DefaultEntity {
         this.pessoa = pessoa;
     }
 
+    public Cargo getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(Cargo cargo) {
+        this.cargo = cargo;
+    }
 }

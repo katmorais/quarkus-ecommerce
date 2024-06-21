@@ -19,7 +19,7 @@ public record ItemCompraResponseDTO(
     }
 
     public static List<ItemCompraResponseDTO> valueOf(List<ItemCompra> item) {
-       return item.stream().map(i -> ItemCompraResponseDTO.valueOf(i)).toList();
+       return item.stream().map(ItemCompraResponseDTO::valueOf).toList();
     }
 
 }
