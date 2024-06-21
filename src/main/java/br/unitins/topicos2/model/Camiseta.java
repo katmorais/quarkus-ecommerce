@@ -13,6 +13,7 @@ public class Camiseta extends DefaultEntity {
     private String estampa;
     private String tecido;
     private Tamanho tamanho;
+    private Sexo sexo;
     private String nomeImagem;
 
     @JoinColumn(name = "id_fornecedor")
@@ -94,6 +95,14 @@ public class Camiseta extends DefaultEntity {
 
     public void setTamanho(Tamanho tamanho) {
         this.tamanho = tamanho;
+    }
+
+    public Sexo getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
     }
 
     public List<Cor> getCor() {

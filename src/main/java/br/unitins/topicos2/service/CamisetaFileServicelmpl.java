@@ -18,7 +18,6 @@ import jakarta.transaction.Transactional;
 @ApplicationScoped
 public class CamisetaFileServicelmpl implements FileService{
 
- // ex. /user/janio/quarkus/images/usuario/
     private final String PATH_USER = System.getProperty("user.home")
         + File.separator + "quarkus"
         + File.separator + "images"
@@ -35,7 +34,6 @@ public class CamisetaFileServicelmpl implements FileService{
         try {
             String novoNomeImagem = salvarImagem(imagem, nomeImagem);
             camiseta.setNomeImagem(novoNomeImagem);
-            // excluir a imagem antiga (trabalho pra quem????)
         } catch (IOException e) {
             throw new ValidationException("imagem", e.toString());
         }

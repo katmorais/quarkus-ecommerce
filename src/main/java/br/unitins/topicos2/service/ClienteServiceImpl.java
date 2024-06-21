@@ -6,9 +6,7 @@ import java.util.stream.Collectors;
 import br.unitins.topicos2.dto.ClienteDTO;
 import br.unitins.topicos2.dto.ClienteResponseDTO;
 import br.unitins.topicos2.dto.UsuarioResponseDTO;
-import br.unitins.topicos2.model.Cliente;
-import br.unitins.topicos2.model.Pessoa;
-import br.unitins.topicos2.model.Usuario;
+import br.unitins.topicos2.model.*;
 import br.unitins.topicos2.repository.CidadeRepository;
 import br.unitins.topicos2.repository.ClienteRepository;
 import br.unitins.topicos2.repository.PessoaRepository;
@@ -23,6 +21,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 
+import static java.util.Objects.nonNull;
+
 @ApplicationScoped
 public class ClienteServiceImpl implements ClienteService {
 
@@ -30,7 +30,7 @@ public class ClienteServiceImpl implements ClienteService {
     ClienteRepository clienteRepository;
 
     @Inject
-    CidadeRepository cidadeRepository;
+    HashService hashService;
 
     @Inject
     PessoaRepository pessoaRepository;
@@ -62,23 +62,24 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     @Transactional
     public ClienteResponseDTO create(@Valid ClienteDTO clienteDTO) throws ConstraintViolationException {
-        validarDados(clienteDTO);
+//        validarDados(clienteDTO);
 
         Usuario usuario = new Usuario();
         usuario.setUsername(clienteDTO.username());
-        usuario.setSenha(clienteDTO.senha());
-        usuarioRepository.persist(usuario);
+        usuario.setSenha(hashService.getHashSenha(clienteDTO.senha()));
 
         Pessoa pessoa = new Pessoa();
         pessoa.setCpf(clienteDTO.cpf());
         pessoa.setDataNascimento(clienteDTO.dataNascimento());
         pessoa.setNome(clienteDTO.nome());
         pessoa.setUsuario(usuario);
-        pessoaRepository.persist(pessoa);
+
+        Cidade cidade = new Cidade(clienteDTO.cidadeId());
+        cidade.setEstado(new Estado(clienteDTO.estadoId()));
 
         Cliente cliente = new Cliente();
-        cliente.setNaturalidade(cidadeRepository.findById(clienteDTO.idNaturalidade()));
         cliente.setPessoa(pessoa);
+        cliente.setNaturalidade(cidade);
         clienteRepository.persist(cliente);
 
         return ClienteResponseDTO.valueOf(cliente);
@@ -128,6 +129,18 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    public void alterarSenha(ClienteDTO dto) {
+        Cliente cliente = clienteRepository.findByCpfAndLogin(dto.cpf(), dto.username());
+
+        if (nonNull(cliente)) {
+            String hashSenha = hashService.getHashSenha(dto.senha());
+            cliente.getPessoa().getUsuario().setSenha(hashSenha);
+        } else {
+            throw new ValidationException("cpf", "Cliente não encontrado.");
+        }
+    }
+
+    @Override
     public UsuarioResponseDTO findByUsernameAndSenha(String username, String senha) {
         Cliente cliente = clienteRepository.findByUsernameAndSenha(username, senha).firstResult();
 
@@ -135,5 +148,6 @@ public class ClienteServiceImpl implements ClienteService {
             throw new ValidationException(username, "Username ou senha inválido");
         return UsuarioResponseDTO.valueOf(cliente.getPessoa());
     }
+
 
 }

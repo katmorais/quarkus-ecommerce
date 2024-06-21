@@ -16,6 +16,7 @@ public record CamisetaDTO(
         String estampa,
         String tecido,
         Integer tamanho,
+        Integer sexo,
 
         @NotNull(message = "O campo idFornecedor deve ser informado.")
         Long fornecedor,

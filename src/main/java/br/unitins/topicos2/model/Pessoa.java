@@ -18,7 +18,7 @@ public class Pessoa extends DefaultEntity {
     private String cpf;
     private String nome;
     private LocalDate dataNascimento;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id", unique = true)
     private Usuario usuario;
 

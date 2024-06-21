@@ -34,11 +34,12 @@ public class CamisetaResource {
     @GET
     public List<CamisetaResponseDTO> getAll(
             @QueryParam("page") @DefaultValue("0") int page,
-            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+            @QueryParam("categoria") String categoria) {
 
         LOG.info("Buscando todos os camisetas.");
         LOG.debug("ERRO DE DEBUG.");
-        return camisetaService.getAll(page, pageSize);
+        return camisetaService.getAll(page, pageSize, categoria);
     }
 
     @GET

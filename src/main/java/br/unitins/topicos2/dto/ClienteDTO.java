@@ -3,10 +3,12 @@ package br.unitins.topicos2.dto;
 import java.time.LocalDate;
 
 public record ClienteDTO(
-    String cpf,
-    String nome,
-    LocalDate dataNascimento,
-    String username,
-    String senha,
-    Long idNaturalidade
-) { }
+        String nome,
+        String username,
+        String senha,
+        String cpf,
+        LocalDate dataNascimento,
+        Long cidadeId,
+        Long estadoId
+) {
+}

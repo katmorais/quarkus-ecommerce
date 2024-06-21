@@ -12,6 +12,13 @@ public class Estado extends DefaultEntity {
     @Column(nullable = false, length = 2)
     private String sigla;
 
+    public Estado() {
+    }
+
+    public Estado(Long id) {
+        this.setId(id);
+    }
+
     public String getNome() {
         return nome;
     }

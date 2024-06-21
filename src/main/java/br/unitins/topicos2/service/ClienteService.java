@@ -28,4 +28,5 @@ public interface ClienteService {
 
     long count();
 
+    void alterarSenha(ClienteDTO dto);
 }

@@ -1,14 +1,11 @@
 package br.unitins.topicos2.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Cliente extends DefaultEntity {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_pessoa", referencedColumnName = "id", unique = true)
     private Pessoa pessoa;
 

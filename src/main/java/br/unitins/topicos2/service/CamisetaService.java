@@ -9,7 +9,7 @@ import jakarta.validation.Valid;
 public interface CamisetaService {
 
     // recursos basicos
-    List<CamisetaResponseDTO> getAll(int page, int pageSize);
+    List<CamisetaResponseDTO> getAll(int page, int pageSize, String categoria);
 
     CamisetaResponseDTO findById(Long id);
 

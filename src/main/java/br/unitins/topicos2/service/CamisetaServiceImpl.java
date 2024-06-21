@@ -4,11 +4,13 @@ import br.unitins.topicos2.dto.CamisetaDTO;
 import br.unitins.topicos2.dto.CamisetaResponseDTO;
 import br.unitins.topicos2.model.Camiseta;
 import br.unitins.topicos2.model.Cor;
+import br.unitins.topicos2.model.Sexo;
 import br.unitins.topicos2.model.Tamanho;
 import br.unitins.topicos2.repository.CamisetaRepository;
 import br.unitins.topicos2.repository.FornecedorRepository;
 import br.unitins.topicos2.repository.MarcaRepository;
 import br.unitins.topicos2.repository.TipoCamisetaRepository;
+import io.quarkus.runtime.util.StringUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -41,10 +43,18 @@ public class CamisetaServiceImpl implements CamisetaService {
     Validator validator;
 
     @Override
-    public List<CamisetaResponseDTO> getAll(int page, int pageSize) {
-
-        List<Camiseta> list = camisetaRepository.findAll().page(page, pageSize).list();
-        return list.stream().map(CamisetaResponseDTO::valueOf).collect(Collectors.toList());
+    public List<CamisetaResponseDTO> getAll(int page, int pageSize, String categoria) {
+        List<Camiseta> list;
+        if (StringUtil.isNullOrEmpty(categoria)) {
+            list = camisetaRepository.findAll().page(page, pageSize).list();
+        } else {
+            if (categoria.equals("masculino") || categoria.equals("feminino")) {
+                list = camisetaRepository.findBySexo(Sexo.getByDescricao(categoria)).page(page, pageSize).list();
+            } else {
+                list = camisetaRepository.findByCategoria(categoria).page(page, pageSize).list();
+            }
+        }
+        return list.stream().map(CamisetaResponseDTO::valueOf).toList();
     }
 
     @Override
@@ -69,10 +79,11 @@ public class CamisetaServiceImpl implements CamisetaService {
         entity.setEstampa(camisetaDTO.estampa());
         entity.setTecido(camisetaDTO.tecido());
         entity.setTamanho(Tamanho.valueOf(camisetaDTO.tamanho()));
+        entity.setSexo(Sexo.valueOf(camisetaDTO.sexo()));
         entity.setFornecedor(fornecedorRepository.findById(camisetaDTO.fornecedor()));
         entity.setTipoCamiseta(tipoCamisetaRepository.findById(camisetaDTO.tipoCamiseta()));
         entity.setMarca(marcaRepository.findById(camisetaDTO.marca()));
-        entity.setCor(camisetaDTO.cores().stream().map(Cor::new).collect(Collectors.toList()));
+        entity.setCor(camisetaDTO.cores().stream().map(Cor::new).toList());
 
         camisetaRepository.persist(entity);
 
